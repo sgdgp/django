@@ -20,6 +20,10 @@ def change_cwd(directory):
 
 class DiscoverRunnerTest(TestCase):
 
+    def test_init_debug_mode(self):
+        runner = DiscoverRunner()
+        self.assertFalse(runner.debug_mode)
+
     def test_dotted_test_module(self):
         count = DiscoverRunner().build_suite(
             ["test_discovery_sample.tests_sample"],
@@ -156,6 +160,9 @@ class DiscoverRunnerTest(TestCase):
                       msg="Methods of simple cases should be reversed.")
         self.assertIn('test_2', suite[8].id(),
                       msg="Methods of unittest cases should be reversed.")
+
+    def test_overridable_get_test_runner_kwargs(self):
+        self.assertIsInstance(DiscoverRunner().get_test_runner_kwargs(), dict)
 
     def test_overridable_test_suite(self):
         self.assertEqual(DiscoverRunner().test_suite, TestSuite)
